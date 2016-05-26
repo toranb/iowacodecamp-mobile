@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {deserialize, selectSession, selectSpeaker} from 'iowacodecamp/utilities/transform';
 
 const initialState = {
@@ -9,13 +10,13 @@ const initialState = {
 
 var all = ((state, action) => {
     if (action.type === 'DESERIALIZE_ALL') {
-        return Object.assign({}, state, deserialize(action.response));
+        return Ember.assign({}, state, deserialize(action.response));
     }
     if (action.type === 'SELECT_SPEAKER') {
-        return Object.assign({}, state, selectSpeaker(state.speakers, action.speaker));
+        return Ember.assign({}, state, selectSpeaker(state.speakers, action.speaker));
     }
     if (action.type === 'SELECT_SESSION') {
-        return Object.assign({}, state, selectSession(state.sessions, action.session));
+        return Ember.assign({}, state, selectSession(state.sessions, action.session));
     }
     return state || initialState;
 });
