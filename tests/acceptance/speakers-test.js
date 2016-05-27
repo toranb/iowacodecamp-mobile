@@ -1,8 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'iowacodecamp/tests/helpers/module-for-acceptance';
 
-var first = {session: 'foo', level: 100, desc: 'first one', time: '9:00 AM - 10:15 AM', room: 'Room A', speaker: {name: 'toran', bio: 'javascript ninja', location: 'Burlington, IA'}};
-var last = {session: 'bar', level: 300, desc: 'last one', time: '10:30 AM - 11:45 AM', room: 'Room B', speaker: {name: 'nick', bio: 'rockstar hacker', location: 'Des Moines, IA'}};
+var first = {session: 'foo', level: 100, desc: 'first one', time: '9:00 AM - 10:15 AM', room: 'Room A', speaker: {name: 'toran', bio: 'javascript ninja', location: 'Burlington, IA', img: 'ToranBillups.jpg', web: 'http://toranbillups.com'}};
+var last = {session: 'bar', level: 300, desc: 'last one', time: '10:30 AM - 11:45 AM', room: 'Room B', speaker: {name: 'nick', bio: 'rockstar hacker', location: 'Des Moines, IA', img: 'NickStarke.jpg', web: 'http://google.com'}};
 var data = {'d':{'success':true,'message':null,'data':[first, last]}};
 
 moduleForAcceptance('Acceptance | speakers', {
@@ -27,13 +27,11 @@ test('speakers route will show the list of available speakers', function(assert)
         assert.equal(last_location, 'Des Moines, IA');
         var first_link = find('.speaker-link:eq(0) a').attr('href');
         assert.equal(first_link, '#');
-        // var last_link = find('.speaker-link:eq(1) a').attr('href');
-        // equal(last_link, '#');
     });
 });
 
 test('speaker details route will show the speaker details', function(assert) {
-    assert.expect(6);
+    assert.expect(9);
     visit('/speakers');
     click('.speaker-link :eq(0)');
     andThen(function() {
@@ -47,12 +45,26 @@ test('speaker details route will show the speaker details', function(assert) {
         assert.equal(first_session_name.text(), 'foo');
         var first_session_link = find('.speaker-session-link:eq(0) a').attr('href');
         assert.equal(first_session_link, '#');
-        // var speaker_img = find('.speaker-detail-img:eq(0)');
-        // assert.equal(speaker_img.attr('src'), 'http://iowacodecamp.com/public/images/speakers/ToranBillups.jpg');
+        var speaker_img = find('.speaker-detail-img:eq(0)');
+        assert.equal(speaker_img.prop('src'), 'http://iowacodecamp.com/public/images/speakers/ToranBillups.jpg');
         var speaker_location = find('.speaker-detail-location:eq(0)');
         assert.equal(speaker_location.text(), 'Burlington, IA');
-        // var speaker_web = find('.speaker-detail-web a:eq(0)');
-        // assert.equal(speaker_web.attr('href').trim(), 'http://toranbillups.com');
-        // assert.equal(speaker_web.text().trim(), 'http://toranbillups.com');
+        var speaker_web = find('.speaker-detail-web');
+        assert.equal(speaker_web.find('a').prop('href').trim(), 'http://toranbillups.com/');
+        assert.equal(speaker_web.text().trim(), 'http://toranbillups.com');
+    });
+});
+
+test('speaker details route has link to each session', function(assert) {
+    assert.expect(3);
+    visit('/speakers');
+    click('.speaker-link:eq(0)');
+    click('.speaker-session-link:eq(0) a');
+    andThen(function() {
+        assert.ok(currentURL().match(/^\/sessions\/[0-9]/));
+        var session_name = find('.session-name');
+        assert.equal(session_name.text(), 'foo');
+        var speaker_name = find('.session-speaker-name');
+        assert.equal(speaker_name.text(), 'toran');
     });
 });

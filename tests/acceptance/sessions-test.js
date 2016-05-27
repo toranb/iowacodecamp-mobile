@@ -1,9 +1,9 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'iowacodecamp/tests/helpers/module-for-acceptance';
 
-var first = {session: "foo", level: 100, desc: "first one", time: "9:00 AM - 10:15 AM", room: "Room A", speaker: {name: "toran", bio: "javascript ninja", location: "Burlington, IA"}};
-var last = {session: "bar", level: 300, desc: "last one", time: "10:30 AM - 11:45 AM", room: "Room B", speaker: {name: "nick", bio: "rockstar hacker", location: "Des Moines, IA"}};
-var data = {"d":{"success":true,"message":null,"data":[first, last]}};
+var first = {session: 'foo', level: 100, desc: 'first one', time: '9:00 AM - 10:15 AM', room: 'Room A', speaker: {name: 'toran', bio: 'javascript ninja', location: 'Burlington, IA', img: 'ToranBillups.jpg', web: 'http://toranbillups.com'}};
+var last = {session: 'bar', level: 300, desc: 'last one', time: '10:30 AM - 11:45 AM', room: 'Room B', speaker: {name: 'nick', bio: 'rockstar hacker', location: 'Des Moines, IA', img: 'NickStarke.jpg', web: 'http://google.com'}};
+var data = {'d':{'success':true,'message':null,'data':[first, last]}};
 
 moduleForAcceptance('Acceptance | sessions', {
     beforeEach() {
@@ -67,7 +67,7 @@ test('sessions will be sorted and grouped by listing time', function(assert) {
 });
 
 test('session details route has link to each speaker', function(assert) {
-    assert.expect(2);
+    assert.expect(3);
     visit('/');
     click('.session-link:eq(0) a');
     click('.session-speaker-link:eq(0) a');
@@ -75,5 +75,7 @@ test('session details route has link to each speaker', function(assert) {
         assert.ok(currentURL().match(/^\/speakers\/[0-9]/));
         var speaker_name = find('.speaker-detail-name');
         assert.equal(speaker_name.text(), 'toran');
+        var session_name = find('.speaker-session-name');
+        assert.equal(session_name.text(), 'foo');
     });
 });

@@ -5,13 +5,13 @@ var SpeakerDetailComponent = Ember.Component.extend({
     layout: hbs`
         <div class="profile-wrap">
           <div class="img-wrap">
-            <img class="speaker-detail-img" src={{imgUrl}}>
+            <img class="speaker-detail-img" src={{speaker-url speaker.img}}>
           </div>
           <div class="details-wrap">
             <span class="speaker-detail-name">{{speaker.name}}</span>
             <span class="speaker-detail-location">{{speaker.location}}</span>
             <span class="speaker-detail-web">
-              <a href={{web}}>{{speaker.web}}</a>
+              <a href={{speaker.web}}>{{speaker.web}}</a>
             </span>
           </div>
         </div>
